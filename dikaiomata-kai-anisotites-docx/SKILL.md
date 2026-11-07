@@ -7,6 +7,10 @@ description: Create or revise the two source-grounded written deliverables—cri
 
 Use this skill for a new unit or a targeted revision of a named written deliverable. It produces only the critical-summaries DOCX and lecture-script DOCX. Route an explicitly approved presentation request to `dikaiomata-kai-anisotites-pptx`.
 
+## Package installation
+
+This skill requires the sibling folder `rights-and-inequalities-common`. Install the package with `install-rights-skills.ps1`, which copies both skills and that common folder together. Before acting, verify that `../rights-and-inequalities-common/core-and-evidence.md` exists; if it does not, report the incomplete installation.
+
 ## Mandatory reading order
 
 Before acting, read these instructions in order:
@@ -19,7 +23,7 @@ Read `critical-paper-summary` before drafting a selected reading, `teo-writing-a
 
 ## Routing
 
-- **New unit:** follow every stage in `initial-production.md` in order. Deliver only the three validated DOCX files, then stop for the user's review.
+- **New unit:** follow every stage in `initial-production.md` in order. Deliver only the two validated DOCX files, then stop for the user's review.
 - **Targeted written revision:** open only the named artifact, the directly relevant bibliography-selected sources, and the applicable parts of the references. Regenerate a downstream written file only when the user explicitly requests it; otherwise state the resulting consistency implication.
 - **Missing source, template, active root or usable Notion access:** use the recovery process in the common reference. Report the precise blocker only after it fails; never substitute a prior deliverable, memory or unapproved source.
 

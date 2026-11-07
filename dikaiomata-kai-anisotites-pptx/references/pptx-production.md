@@ -1,4 +1,4 @@
-### 6. Deliverable 4 — full PowerPoint deck (explicit second phase only)
+### 3. Deliverable 3 — full PowerPoint deck (explicit second phase only)
 
 - Create the deck with the `presentations` skill from `[Templates]\Rights&Inequality.potx`. Inspect the template and its layouts before editing.
 - Before writing or running a presentation builder, bootstrap a **new isolated build directory** for the current run. On Windows, create a `node_modules` junction in that directory pointing to the Node package directory returned by the workspace dependency loader. Set both `NODE_PATH` and `RUNTIME_NODE_MODULES` to that same package directory for the builder and the finalizer. If any project path contains literal square brackets, use PowerShell's `-LiteralPath` form when changing directories or inspecting paths; otherwise PowerShell can treat the path as a wildcard pattern and run the preflight in the wrong folder.

@@ -16,7 +16,7 @@ Create two linked written deliverables first for a requested unit of the course 
 
 ## Required deliverable titles and filenames
 
-For every unit, replace the bracketed fields below with the requested unit number and its exact title from the course plan. Use the same text for the document/deck title and its filename, adding only the required file extension:
+For every unit, replace the bracketed fields below with the requested unit number and its exact title from the course outline. Use the same text for the document/deck title and its filename, adding only the required file extension:
 
 1. **Critical summaries:** `ΔΑ - [αριθμός ενότητας] - [τίτλος ενότητας] - Κριτικές περιλήψεις βιβλιογραφίας.docx`
 2. **Full lecture script:** `ΔΑ - [αριθμός ενότητας] - [τίτλος ενότητας].docx`
@@ -28,7 +28,7 @@ Do not add alternative labels such as «Διάλεξη», «Ενότητα», «
 
 Keep the complete, exact unit title inside the full lecture DOCX and the PPTX cover title. For filenames only, create a Windows-safe title token: replace every forbidden Windows filename character (`<`, `>`, `:`, `"`, `/`, `\\`, `|`, `?`, `*`) with a hyphen (`-`), collapse adjacent hyphens and spaces to one ` - ` separator where needed, and remove any trailing space or period. Do not change letters, accents, punctuation that Windows permits or the title's meaning. Never use a reserved Windows device name as a filename.
 
-Use that Windows-safe title token only in the script and PPTX filenames. The internal document title and cover title retain the complete exact title from the course plan, including a colon or other punctuation where it belongs.
+Use that Windows-safe title token only in the script and PPTX filenames. The internal document title and cover title retain the complete exact title from the course outline, including a colon or other punctuation where it belongs.
 
 Use this skill only for a discrete course unit or a targeted revision of one identified deliverable. Do not use it for generic sociology questions, unrelated teaching material or unsourced web research.
 
@@ -48,7 +48,7 @@ Only after a separate explicit user request, begin the presentation phase:
 
 `εγκεκριμένες/ελεγμένες από τον χρήστη περιλήψεις και τελικό κείμενο → νέο slide plan → νέο PPTX`
 
-- Treat the current user instruction, the Notion task, its linked Knowledge bibliography page, the course plan, the files in `[Πηγές]` and the project templates as the only authoritative inputs for a new run. For a targeted revision, the explicitly named artifact is an additional authoritative input only to the extent needed to revise it. Write final deliverables only to `[Παραδοτέα]`.
+- Treat the current user instruction, the Notion task, its linked Knowledge bibliography page, the course outline, the files in `[Πηγές]` and the project templates as the only authoritative inputs for a new run. For a targeted revision, the explicitly named artifact is an additional authoritative input only to the extent needed to revise it. Write final deliverables only to `[Παραδοτέα]`.
 - Do not reuse, copy, adapt, import or silently rely on content from earlier conversations, memory, earlier planning documents, lecture scripts, slide decks, slide plans, presentation builders, working files or earlier exports. This prohibition applies even when the requested unit has the same title as a previous one.
 - Do not open an earlier deliverable merely because it is available in the project folder. A pre-existing deck or script is not a shortcut, reference or source.
 - The only exception is an explicit current user instruction identifying material to reuse, revise, continue, compare, preserve or adapt. In the PPTX second phase, the user’s explicit request authorizes reuse of the two reviewed deliverables from the current unit run; do not silently substitute earlier versions or unreviewed files. Record internally which reviewed versions are used.
@@ -66,7 +66,7 @@ Before export, perform a provenance check: confirm that the deck's slide titles,
 
 ## Non-negotiable evidence boundary
 
-- Work only from the Notion task **Δικαιώματα και Ανισότητες (Δ&Α)** (`https://app.notion.com/p/3dc955fa9b4c80d78c79d82c0f9f8f43`), its linked Knowledge page **Δ&Α Βιβλιογραφία ανά ενότητα** (`https://app.notion.com/p/3e2955fa9b4c81fc9c85e411df5d9ded`), the course plan, and the files in the project's `[Πηγές]` folder. Do not use external sources; this boundary may be changed only by an explicit current user instruction.
+- Work only from the Notion task **Δικαιώματα και Ανισότητες (Δ&Α)** (`https://app.notion.com/p/3dc955fa9b4c80d78c79d82c0f9f8f43`), its linked Knowledge page **Δ&Α Βιβλιογραφία ανά ενότητα** (`https://app.notion.com/p/3e2955fa9b4c81fc9c85e411df5d9ded`), the course outline, and the files in the project's `[Πηγές]` folder. Do not use external sources; this boundary may be changed only by an explicit current user instruction.
 - At the start of each unit, locate and read the Notion task. Read the overall course description, learning objectives, weekly structure and the requested unit's description before drafting. Then follow the bibliography link at the top of that Task page and read the corresponding unit on **Δ&Α Βιβλιογραφία ανά ενότητα**.
 - Treat the corresponding bibliography entry as the binding source-scope specification. It determines the local files, exact chapters, subsections, page ranges, or full articles/books that may support the unit. Do not broaden the reading selection with other local sources unless the bibliography entry identifies them or the user explicitly authorizes it.
 - Inventory `[Πηγές]` to resolve the specified works to their actual local filenames. Then study closely the exact material selected by the corresponding bibliography entry; do not infer scope from a filename or table of contents. If a specified work, chapter, subsection or page range cannot be located in `[Πηγές]`, stop and report the precise missing material rather than substituting another source.

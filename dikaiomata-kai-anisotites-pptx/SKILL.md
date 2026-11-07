@@ -7,6 +7,10 @@ description: Build and validate the final Rights and Inequalities PowerPoint onl
 
 Use this skill only when the user explicitly asks for the PowerPoint after reviewing the two written deliverables from the current run. It creates only the editable PPTX. It does not recreate, revise or silently replace the summaries or script.
 
+## Package installation
+
+This skill requires the sibling folder `rights-and-inequalities-common`. Install the package with `install-rights-skills.ps1`, which copies both skills and that common folder together. Before acting, verify that `../rights-and-inequalities-common/core-and-evidence.md` exists; if it does not, report the incomplete installation.
+
 ## Mandatory reading order
 
 Before acting, read:
