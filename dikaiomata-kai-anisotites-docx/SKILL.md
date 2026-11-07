@@ -30,3 +30,9 @@ Read `critical-paper-summary` before drafting a selected reading, `teo-writing-a
 ## Completion boundary
 
 Final outputs go only to `[Παραδοτέα]` under the verified active root. Retain no temporary artifacts there. The initial phase succeeds only after every applicable source, integrity, citation, template, word-count and visual-rendering gate passes.
+
+## Non-negotiable repair loop
+
+A failed quality gate is never a delivery point, a hand-off point, or a reason to ask the user whether to continue. It is a repair signal: identify the failing artifact and criterion, return to the applicable verified source material and internal plan, make the required substantive correction, and rerun every affected gate. Repeat until all applicable gates pass before describing any file as final or asking for review.
+
+Revise each failed summary, section or script as its own source-bound case. It is prohibited to add a shared paragraph, lightly varied boilerplate, template expansion, automated loop, repeated transition or other reusable prose across readings to raise word counts. Added prose is permissible only when it makes a distinct, verified analytical contribution to that specific reading or argument-dossier move. Do not treat the completion rule as overriding system safety, user authorisation, or a genuine absence of required source material; those constraints remain binding.
