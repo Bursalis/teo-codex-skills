@@ -222,14 +222,6 @@ def audit_docx(path: Path, kind: str) -> list[dict[str, Any]]:
              "value": sentence_duplicates, "pass": not sentence_duplicates},
         ]
         out.append({"check": "critical_summary_sections_present", "value": len(entries), "pass": bool(entries)})
-    elif kind == "outline":
-        counts: dict[str, int] = {}
-        for style, _ in paras:
-            key = style.casefold().replace(" ", "")
-            counts[key] = counts.get(key, 0) + 1
-        for required in ("heading1", "title", "heading3"):
-            out.append({"check": f"outline_style_{required}", "value": counts.get(required, 0),
-                        "pass": counts.get(required, 0) > 0})
     return out
 
 
@@ -486,7 +478,6 @@ def audit_package(directory: Path, unit: str, title: str, template: Path,
     stem = f"ΔΑ - {unit} - {safe_title(title)}"
     files = {
         "summaries": directory / f"{stem} - Κριτικές περιλήψεις βιβλιογραφίας.docx",
-        "outline": directory / f"ΔΑ - {unit} - Προσχέδιο.docx",
         "lecture": directory / f"{stem}.docx",
         "pptx": directory / f"{stem}.pptx",
     }
@@ -496,19 +487,6 @@ def audit_package(directory: Path, unit: str, title: str, template: Path,
         checks.append({"check": f"deliverable_{kind}_exists", "value": str(path), "pass": exists})
         if exists and kind != "pptx":
             checks.extend(audit_docx(path, kind))
-    if files["outline"].is_file():
-        outline_paras = docx_paragraphs(files["outline"])
-        h1 = [text.strip() for style, text in outline_paras
-              if style.casefold().replace(" ", "") == "heading1" and text.strip()]
-        titles = [text.strip() for style, text in outline_paras
-                  if style.casefold() == "title" and text.strip()]
-        expected_h1 = f"Δικαιώματα και Ανισότητες {unit} - προσχέδιο"
-        checks.extend([
-            {"check": "outline_exact_heading1", "value": h1[0] if h1 else None,
-             "expected": expected_h1, "pass": h1[:1] == [expected_h1]},
-            {"check": "outline_exact_unit_title", "value": titles[0] if titles else None,
-             "expected": title, "pass": titles[:1] == [title]},
-        ])
     if files["lecture"].is_file():
         body_titles = [text.strip() for _, text in docx_paragraphs(files["lecture"]) if text.strip()]
         checks.append({"check": "lecture_starts_with_exact_unit_title",
@@ -517,6 +495,27 @@ def audit_package(directory: Path, unit: str, title: str, template: Path,
                        "pass": bool(body_titles) and body_titles[0] == title})
     if files["pptx"].is_file():
         checks.extend(audit_pptx(files["pptx"], template, expected_total))
+    return checks
+
+
+def audit_docx_package(directory: Path, unit: str, title: str) -> list[dict[str, Any]]:
+    stem = f"ΔΑ - {unit} - {safe_title(title)}"
+    files = {
+        "summaries": directory / f"{stem} - Κριτικές περιλήψεις βιβλιογραφίας.docx",
+        "lecture": directory / f"{stem}.docx",
+    }
+    checks: list[dict[str, Any]] = []
+    for kind, path in files.items():
+        exists = path.is_file()
+        checks.append({"check": f"deliverable_{kind}_exists", "value": str(path), "pass": exists})
+        if exists:
+            checks.extend(audit_docx(path, kind))
+    if files["lecture"].is_file():
+        body_titles = [text.strip() for _, text in docx_paragraphs(files["lecture"]) if text.strip()]
+        checks.append({"check": "lecture_starts_with_exact_unit_title",
+                       "value": body_titles[0] if body_titles else None,
+                       "expected": title,
+                       "pass": bool(body_titles) and body_titles[0] == title})
     return checks
 
 
@@ -554,6 +553,10 @@ def main() -> int:
     audit.add_argument("--title", required=True)
     audit.add_argument("--template", required=True, type=Path)
     audit.add_argument("--expected-total", required=True, type=int)
+    docx_audit = sub.add_parser("audit-docx")
+    docx_audit.add_argument("--directory", required=True, type=Path)
+    docx_audit.add_argument("--unit", required=True)
+    docx_audit.add_argument("--title", required=True)
     ppt = sub.add_parser("audit-pptx")
     ppt.add_argument("--pptx", required=True, type=Path)
     ppt.add_argument("--template", type=Path)
@@ -570,6 +573,8 @@ def main() -> int:
             return 0
         if args.command == "audit-pptx":
             result = audit_pptx(args.pptx, args.template, args.expected_total)
+        elif args.command == "audit-docx":
+            result = audit_docx_package(args.directory, args.unit, args.title)
         else:
             result = audit_package(args.directory, args.unit, args.title,
                                    args.template, args.expected_total)

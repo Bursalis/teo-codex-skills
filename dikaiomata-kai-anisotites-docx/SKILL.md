@@ -1,18 +1,18 @@
 ---
 name: dikaiomata-kai-anisotites-docx
-description: Create or revise the three source-grounded written deliverables—critical summaries, Greek lecture script and cited outline—for one Rights and Inequalities unit. Use before, never during, the separately authorised PPTX phase.
+description: Create or revise the two source-grounded written deliverables—critical summaries and Greek lecture script—for one Rights and Inequalities unit. Use before, never during, the separately authorised PPTX phase.
 ---
 
 # Δικαιώματα και ανισότητες — γραπτά παραδοτέα
 
-Use this skill for a new unit or a targeted revision of a named written deliverable. It produces only the critical-summaries DOCX, lecture-script DOCX and outline DOCX. Never create a PPTX, slide plan or deck; route an explicitly approved presentation request to `dikaiomata-kai-anisotites-pptx`.
+Use this skill for a new unit or a targeted revision of a named written deliverable. It produces only the critical-summaries DOCX and lecture-script DOCX. Route an explicitly approved presentation request to `dikaiomata-kai-anisotites-pptx`.
 
 ## Mandatory reading order
 
 Before acting, read these instructions in order:
 
 1. [`../rights-and-inequalities-common/core-and-evidence.md`](../rights-and-inequalities-common/core-and-evidence.md) for the project root, authoritative inputs, provenance, evidence boundary, Notion recovery, writing authority and negative-construction gate.
-2. [`references/initial-production.md`](references/initial-production.md) for the research, summary, dossier, pedagogical-design, script and outline requirements.
+2. [`references/initial-production.md`](references/initial-production.md) for the research, summary, dossier, pedagogical-design and script requirements.
 3. [`references/docx-quality-gates.md`](references/docx-quality-gates.md) before finalising or delivering any file.
 
 Read `critical-paper-summary` before drafting a selected reading, `teo-writing-academic` before writing or revising prose, and `documents` before authoring or rendering a DOCX. Those skills govern their respective work; this skill supplies the course-specific constraints.
