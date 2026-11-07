@@ -1,0 +1,3 @@
+# Python bytecode and caches are regenerated locally.
+__pycache__/
+*.py[cod]
