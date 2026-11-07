@@ -1,6 +1,0 @@
-interface:
-  display_name: "Δικαιώματα και ανισότητες"
-  short_description: "Κριτικές περιλήψεις, τεκμηριωμένη διάλεξη και PPTX ανά ενότητα"
-  default_prompt: "Use $dikaiomata-kai-anisotites to create the four deliverables for Unit [number/title] of the Δικαιώματα και ανισότητες course."
-policy:
-  allow_implicit_invocation: true
