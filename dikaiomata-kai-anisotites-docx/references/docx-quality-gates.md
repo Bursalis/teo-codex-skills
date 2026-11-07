@@ -15,3 +15,21 @@ Keep only current-run final deliverables in `[Παραδοτέα]`. Move only cl
 Repair a failed critical summary one reading at a time. Reopen that reading's complete selected material and replace its synthesis with a fresh source-bound account; then rerun the complete per-reading integrity audit. It is prohibited to append or insert a paragraph shared across summaries, including a paragraph with superficial changes to an author name, title or example. Never use boilerplate, reusable closures, automated expansion, repetition, generic transitions or any other filler to manipulate word counts.
 
 Repair a failed lecture by returning to the argument dossier and the page-verified sources for the particular section that fails. Rebuild the relevant analytical move and rewrite the script as required by `initial-production.md`; do not patch it with generic prose, repeated exposition or a common paragraph recycled from the summaries. A document is eligible for delivery only after every applicable automated, manual source-fidelity, semantic-structure and visual-rendering gate has passed.
+
+## Delivery receipt and response lock
+
+After the final visual inspection, create an internal delivery receipt for the current run containing:
+
+- the exact path of the critical-summaries DOCX and the lecture-script DOCX;
+- the complete result of the final `audit-docx` run, showing no failed applicable check;
+- the recorded per-summary counts and the bibliography-excluded lecture word count;
+- the render locations and an explicit confirmation that every page was visually inspected; and
+- the completion time and the current-run identifier.
+
+Do not send a final user-facing response until this receipt exists and every item is valid. A final response for a new unit must identify the two delivered files and state that the final audit and visual inspection passed. It must not report partial progress, invite the user to continue production, or describe undelivered work. If the receipt cannot be completed, return to the failed stage and continue the repair loop.
+
+Run the executable lock immediately before the final response:
+
+`quality_gate.py assert-delivery-ready --directory <Παραδοτέα> --unit <αριθμός> --title <τίτλος> --receipt <current-run-delivery-receipt.json>`
+
+This command reruns the DOCX audit and rejects a missing, malformed or visually incomplete receipt. Its successful exit is necessary, but not sufficient by itself: the final response must still cite the two actual files and the completed receipt.

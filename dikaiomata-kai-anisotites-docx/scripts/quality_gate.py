@@ -536,6 +536,31 @@ def self_test() -> None:
     print("quality_gate.py self-test: PASS")
 
 
+def assert_delivery_ready(directory: Path, unit: str, title: str, receipt: Path) -> list[dict[str, Any]]:
+    """Confirm that the final DOCX audit passed and a visual-inspection receipt exists."""
+    checks = audit_docx_package(directory, unit, title)
+    receipt_ok = False
+    receipt_error: str | None = None
+    try:
+        payload = json.loads(receipt.read_text(encoding="utf-8"))
+        receipt_ok = (
+            payload.get("unit") == str(unit)
+            and payload.get("title") == title
+            and payload.get("visual_inspection_passed") is True
+            and bool(payload.get("summaries_render"))
+            and bool(payload.get("lecture_render"))
+        )
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        receipt_error = str(exc)
+    checks.append({
+        "check": "delivery_receipt_with_visual_inspection",
+        "value": str(receipt),
+        "pass": receipt_ok,
+        **({"error": receipt_error} if receipt_error else {}),
+    })
+    return checks
+
+
 def main() -> int:
     for stream in (sys.stdin, sys.stdout, sys.stderr):
         if hasattr(stream, "reconfigure"):
@@ -557,6 +582,11 @@ def main() -> int:
     docx_audit.add_argument("--directory", required=True, type=Path)
     docx_audit.add_argument("--unit", required=True)
     docx_audit.add_argument("--title", required=True)
+    ready = sub.add_parser("assert-delivery-ready")
+    ready.add_argument("--directory", required=True, type=Path)
+    ready.add_argument("--unit", required=True)
+    ready.add_argument("--title", required=True)
+    ready.add_argument("--receipt", required=True, type=Path)
     ppt = sub.add_parser("audit-pptx")
     ppt.add_argument("--pptx", required=True, type=Path)
     ppt.add_argument("--template", type=Path)
@@ -573,6 +603,8 @@ def main() -> int:
             return 0
         if args.command == "audit-pptx":
             result = audit_pptx(args.pptx, args.template, args.expected_total)
+        elif args.command == "assert-delivery-ready":
+            result = assert_delivery_ready(args.directory, args.unit, args.title, args.receipt)
         elif args.command == "audit-docx":
             result = audit_docx_package(args.directory, args.unit, args.title)
         else:

@@ -36,3 +36,19 @@ Final outputs go only to `[Παραδοτέα]` under the verified active root. 
 A failed quality gate is never a delivery point, a hand-off point, or a reason to ask the user whether to continue. It is a repair signal: identify the failing artifact and criterion, return to the applicable verified source material and internal plan, make the required substantive correction, and rerun every affected gate. Repeat until all applicable gates pass before describing any file as final or asking for review.
 
 Revise each failed summary, section or script as its own source-bound case. It is prohibited to add a shared paragraph, lightly varied boilerplate, template expansion, automated loop, repeated transition or other reusable prose across readings to raise word counts. Added prose is permissible only when it makes a distinct, verified analytical contribution to that specific reading or argument-dossier move. Do not treat the completion rule as overriding system safety, user authorisation, or a genuine absence of required source material; those constraints remain binding.
+
+## Delivery lock for a new-unit run
+
+For a new unit, a final user-facing response is permitted only after the run reaches the `delivery-ready` state below. Commentary may report meaningful progress, but it must never be used as a substitute for delivery and the final response must never contain a progress report, a plan, an invitation to continue, or a statement that the deliverables remain incomplete.
+
+`research → validated summaries → evidence map → argument dossier → pedagogical design → validated script → rendered DOCX files → delivery-ready`
+
+The run reaches `delivery-ready` only when all of the following have been recorded internally for the current run:
+
+1. the two required DOCX files exist at their exact required paths in `[Παραδοτέα]`;
+2. `quality_gate.py audit-docx` has been run after both files exist and every applicable check has passed;
+3. the lecture's bibliography-excluded word count is within range and every summary has passed its individual word-count, duplicate and source-fidelity checks;
+4. every page of both final DOCX files has been rendered and visually inspected, with template fidelity, readable text and no clipping, overlap or broken pagination; and
+5. a delivery receipt records the two paths, audit result, word-count result and visual-inspection result.
+
+If any item is absent or fails, continue the current run from the affected stage. Do not emit a final response. The sole exception is an actual system-safety, authorisation or external-state constraint that makes further work impossible; report that precise constraint rather than describing the run as complete.
