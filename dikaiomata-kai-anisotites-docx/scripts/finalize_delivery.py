@@ -21,6 +21,7 @@ import quality_gate
 
 
 def write_json(path: Path, value: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
@@ -40,6 +41,34 @@ def expected_files(directory: Path, unit: str, title: str) -> dict[str, Path]:
     }
 
 
+def write_lock_state(lock_state: Path, *, state: str, run_dir: Path, unit: str, title: str,
+                     receipt: Path | None = None) -> None:
+    value: dict[str, Any] = {
+        "schema_version": 1,
+        "skill": "dikaiomata-kai-anisotites-docx",
+        "state": state,
+        "run_dir": str(run_dir.resolve()),
+        "unit": str(unit),
+        "title": title,
+        "updated_at": datetime.now(timezone.utc).isoformat(),
+    }
+    if receipt is not None:
+        value["receipt"] = str(receipt.resolve())
+    write_json(lock_state.resolve(), value)
+
+
+def require_active_lock(lock_state: Path, run_dir: Path, unit: str, title: str) -> None:
+    state = json.loads(lock_state.resolve().read_text(encoding="utf-8"))
+    if (
+        state.get("skill") != "dikaiomata-kai-anisotites-docx"
+        or state.get("state") != "active"
+        or Path(state.get("run_dir", "")).resolve() != run_dir.resolve()
+        or state.get("unit") != str(unit)
+        or state.get("title") != title
+    ):
+        raise ValueError("Το ενεργό delivery lock δεν αντιστοιχεί στον τρέχοντα run.")
+
+
 def init_run(args: argparse.Namespace) -> int:
     run_dir = args.run_dir.resolve()
     if run_dir.exists() and any(run_dir.iterdir()):
@@ -55,6 +84,7 @@ def init_run(args: argparse.Namespace) -> int:
         "state": "staging",
     }
     write_json(run_dir / "run.json", manifest)
+    write_lock_state(args.lock_state, state="active", run_dir=run_dir, unit=args.unit, title=args.title)
     print(json.dumps(manifest, ensure_ascii=False, indent=2))
     return 0
 
@@ -83,6 +113,7 @@ def finalise(args: argparse.Namespace) -> int:
     run = json.loads(run_path.read_text(encoding="utf-8"))
     if run.get("unit") != str(args.unit) or run.get("title") != args.title:
         raise ValueError("Το run.json δεν αντιστοιχεί στην ενότητα ή στον τίτλο της εντολής.")
+    require_active_lock(args.lock_state, run_dir, args.unit, args.title)
     candidates = expected_files(run_dir / "candidates", args.unit, args.title)
     if not all(path.is_file() for path in candidates.values()):
         raise ValueError("Λείπει υποψήφιο DOCX από το staging directory.")
@@ -113,10 +144,19 @@ def finalise(args: argparse.Namespace) -> int:
         "renders": {kind: [{"path": str(path), "sha256": sha256(path)} for path in paths] for kind, paths in renders.items()},
         "visual_inspection_passed": True,
     }
-    write_json(run_dir / "delivery-receipt.json", receipt)
+    receipt_path = run_dir / "delivery-receipt.json"
+    write_json(receipt_path, receipt)
     run["state"] = "delivery-ready"
     run["completed_at"] = receipt["completed_at"]
     write_json(run_path, run)
+    write_lock_state(
+        args.lock_state,
+        state="delivery-ready",
+        run_dir=run_dir,
+        unit=args.unit,
+        title=args.title,
+        receipt=receipt_path,
+    )
     print(json.dumps(receipt, ensure_ascii=False, indent=2))
     return 0
 
@@ -150,11 +190,13 @@ def main() -> int:
     init.add_argument("--run-dir", required=True, type=Path)
     init.add_argument("--unit", required=True)
     init.add_argument("--title", required=True)
+    init.add_argument("--lock-state", required=True, type=Path)
     finish = sub.add_parser("finalise")
     finish.add_argument("--run-dir", required=True, type=Path)
     finish.add_argument("--deliverables", required=True, type=Path)
     finish.add_argument("--unit", required=True)
     finish.add_argument("--title", required=True)
+    finish.add_argument("--lock-state", required=True, type=Path)
     verify_parser = sub.add_parser("verify")
     verify_parser.add_argument("--receipt", required=True, type=Path)
     verify_parser.add_argument("--unit", required=True)

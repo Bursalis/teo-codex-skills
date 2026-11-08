@@ -29,7 +29,7 @@ Read `critical-paper-summary` before drafting a selected reading, `teo-writing-a
 
 ## Completion boundary
 
-For a new unit, create a unique run directory outside `[Παραδοτέα]`, initialise it with `scripts/finalize_delivery.py init-run`, and write candidates only to its `candidates/` folder. Rendered pages and the visual-review record also belong only in that run directory. `[Παραδοτέα]` receives the two DOCX files only when `scripts/finalize_delivery.py finalise` promotes candidates after all checks pass. Retain no temporary artifacts in `[Παραδοτέα]`.
+For a new unit, create a unique run directory outside `[Παραδοτέα]`. Initialise it with `scripts/finalize_delivery.py init-run` and `--lock-state <working-root>/.codex/rights-and-inequalities-delivery-lock.json`; this activates the runtime delivery lock. Write candidates only to its `candidates/` folder. Rendered pages and the visual-review record also belong only in that run directory. `[Παραδοτέα]` receives the two DOCX files only when `scripts/finalize_delivery.py finalise` promotes candidates after all checks pass; pass the same `--lock-state` path to that command. Retain no temporary artifacts in `[Παραδοτέα]`.
 
 ## Non-negotiable repair loop
 
@@ -43,7 +43,7 @@ For a new unit, a final user-facing response is permitted only after the run rea
 
 `research → validated summaries → evidence map → argument dossier → pedagogical design → validated script → rendered DOCX files → delivery-ready`
 
-The run reaches `delivery-ready` only when `scripts/finalize_delivery.py finalise` creates `delivery-receipt.json` for the current run. That command succeeds only when all of the following are true:
+The run reaches `delivery-ready` only when `scripts/finalize_delivery.py finalise` creates `delivery-receipt.json` for the current run and changes its matching runtime lock to `delivery-ready`. That command succeeds only when all of the following are true:
 
 1. the two required DOCX candidates exist in the current run's staging folder;
 2. the candidate `audit-docx` has passed every applicable check;
@@ -52,3 +52,5 @@ The run reaches `delivery-ready` only when `scripts/finalize_delivery.py finalis
 5. the promoted final files, their hashes, audit output and render hashes are written to the current run's receipt.
 
 Immediately before the final user-facing response, run `scripts/finalize_delivery.py verify` against that receipt. If any item is absent or fails, continue the current run from the affected stage. Do not emit a final response. The sole exception is an actual system-safety, authorisation or external-state constraint that makes further work impossible; report that precise constraint rather than describing the run as complete.
+
+When the companion `rights-delivery-lock` plugin is installed and trusted, its Codex `Stop` hook enforces this boundary at runtime: an active or invalid lock blocks the turn and continues the run. Do not delete, move or manually edit the lock-state file. A user who explicitly abandons a run may remove the state file themselves; this skill does not provide an automated bypass.

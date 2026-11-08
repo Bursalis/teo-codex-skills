@@ -1,0 +1,20 @@
+{
+  "name": "teo-codex-skills",
+  "interface": {
+    "displayName": "Teo Codex Skills"
+  },
+  "plugins": [
+    {
+      "name": "rights-delivery-lock",
+      "source": {
+        "source": "local",
+        "path": "./plugins/rights-delivery-lock"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

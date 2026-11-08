@@ -1,0 +1,17 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "rights-delivery-lock",
+  "version": "1.0.0",
+  "description": "Blocks Codex completion for active Rights and Inequalities DOCX production runs until a verified delivery receipt exists.",
+  "extensions": {
+    "com.openai": {
+      "hooks": "./hooks/hooks.json",
+      "interface": {
+        "displayName": "Rights Delivery Lock",
+        "shortDescription": "Prevents early completion of Rights DOCX runs.",
+        "longDescription": "A local Codex Stop hook that permits completion only after a verified two-DOCX delivery receipt.",
+        "developerName": "Bursalis"
+      }
+    }
+  }
+}
