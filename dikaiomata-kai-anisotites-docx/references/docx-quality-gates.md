@@ -5,7 +5,7 @@ Apply these gates before delivery.
 1. Run `scripts/quality_gate.py self-test` at the beginning of a new unit run.
 2. Render and inspect the critical-summaries DOCX before creating the argument dossier. Confirm one Heading 3 for each selected individual reading, 270–330 body words per reading, verified APA headings, and passed duplicate-paragraph, duplicate-sentence and sentence-by-sentence source-fidelity audits.
 3. Before finalising the lecture, verify that lecture prose alone is 3,600–4,400 words; every source-dependent claim has a page-verified citation; the bibliography exactly matches the citations; and duplicate-prose and semantic-structure audits pass. Redesign the dossier and draft a new script if its analytical structure or word range fails.
-4. Run `quality_gate.py audit-docx --directory <Παραδοτέα> --unit <αριθμός> --title <τίτλος>` after both DOCX files exist. Treat every failed check as a repair signal, never as a delivery or hand-off point. Identify the affected artifact and requirement, revise it substantively from its verified source material and, where applicable, its argument dossier, then rerun all affected gates. Repeat until every applicable check passes.
+4. At the start, initialise a unique run directory outside `[Παραδοτέα]` with `finalize_delivery.py init-run`. Write only candidates to `<run>/candidates`, and run `quality_gate.py audit-docx --directory <run>/candidates --unit <αριθμός> --title <τίτλος>`. Treat every failed check as a repair signal, never as a delivery or hand-off point. Identify the affected artifact and requirement, revise it substantively from its verified source material and, where applicable, its argument dossier, then rerun every affected gate. Repeat until every applicable check passes.
 5. Render and inspect every page of both final DOCX files. Confirm the required templates, filenames, source scope and negative-construction audit.
 
 Keep only current-run final deliverables in `[Παραδοτέα]`. Move only clearly identified temporary artifacts from the current run to the Recycle Bin.
@@ -18,18 +18,12 @@ Repair a failed lecture by returning to the argument dossier and the page-verifi
 
 ## Delivery receipt and response lock
 
-After the final visual inspection, create an internal delivery receipt for the current run containing:
+After the final visual inspection, write `<run>/visual-review.json` with the run ID, `visual_inspection_passed: true` and exhaustive relative PNG page lists for both `renders/summaries` and `renders/lecture`. Do not hand-write a delivery receipt. Run:
 
-- the exact path of the critical-summaries DOCX and the lecture-script DOCX;
-- the complete result of the final `audit-docx` run, showing no failed applicable check;
-- the recorded per-summary counts and the bibliography-excluded lecture word count;
-- the render locations and an explicit confirmation that every page was visually inspected; and
-- the completion time and the current-run identifier.
+`finalize_delivery.py finalise --run-dir <run> --deliverables <Παραδοτέα> --unit <αριθμός> --title <τίτλος>`
 
-Do not send a final user-facing response until this receipt exists and every item is valid. A final response for a new unit must identify the two delivered files and state that the final audit and visual inspection passed. It must not report partial progress, invite the user to continue production, or describe undelivered work. If the receipt cannot be completed, return to the failed stage and continue the repair loop.
+The command reruns the candidate audit, verifies the visual-review inventory, refuses to overwrite a different existing final file, promotes only matching candidates and creates `<run>/delivery-receipt.json` with hashes of final files and renders. Do not send a final user-facing response until this receipt exists and the following verification passes:
 
-Run the executable lock immediately before the final response:
+`finalize_delivery.py verify --receipt <run>/delivery-receipt.json --unit <αριθμός> --title <τίτλος>`
 
-`quality_gate.py assert-delivery-ready --directory <Παραδοτέα> --unit <αριθμός> --title <τίτλος> --receipt <current-run-delivery-receipt.json>`
-
-This command reruns the DOCX audit and rejects a missing, malformed or visually incomplete receipt. Its successful exit is necessary, but not sufficient by itself: the final response must still cite the two actual files and the completed receipt.
+Its successful exit is necessary, but not sufficient by itself: the final response must cite the two actual promoted files and state that the final audit and visual inspection passed.

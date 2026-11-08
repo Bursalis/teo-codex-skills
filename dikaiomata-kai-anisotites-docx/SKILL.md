@@ -29,7 +29,7 @@ Read `critical-paper-summary` before drafting a selected reading, `teo-writing-a
 
 ## Completion boundary
 
-Final outputs go only to `[Παραδοτέα]` under the verified active root. Retain no temporary artifacts there. The initial phase succeeds only after every applicable source, integrity, citation, template, word-count and visual-rendering gate passes.
+For a new unit, create a unique run directory outside `[Παραδοτέα]`, initialise it with `scripts/finalize_delivery.py init-run`, and write candidates only to its `candidates/` folder. Rendered pages and the visual-review record also belong only in that run directory. `[Παραδοτέα]` receives the two DOCX files only when `scripts/finalize_delivery.py finalise` promotes candidates after all checks pass. Retain no temporary artifacts in `[Παραδοτέα]`.
 
 ## Non-negotiable repair loop
 
@@ -43,12 +43,12 @@ For a new unit, a final user-facing response is permitted only after the run rea
 
 `research → validated summaries → evidence map → argument dossier → pedagogical design → validated script → rendered DOCX files → delivery-ready`
 
-The run reaches `delivery-ready` only when all of the following have been recorded internally for the current run:
+The run reaches `delivery-ready` only when `scripts/finalize_delivery.py finalise` creates `delivery-receipt.json` for the current run. That command succeeds only when all of the following are true:
 
-1. the two required DOCX files exist at their exact required paths in `[Παραδοτέα]`;
-2. `quality_gate.py audit-docx` has been run after both files exist and every applicable check has passed;
-3. the lecture's bibliography-excluded word count is within range and every summary has passed its individual word-count, duplicate and source-fidelity checks;
-4. every page of both final DOCX files has been rendered and visually inspected, with template fidelity, readable text and no clipping, overlap or broken pagination; and
-5. a delivery receipt records the two paths, audit result, word-count result and visual-inspection result.
+1. the two required DOCX candidates exist in the current run's staging folder;
+2. the candidate `audit-docx` has passed every applicable check;
+3. every rendered page is present under the current run's render folders and an associated visual-review record identifies them;
+4. the visual-review record confirms every page was inspected and passed; and
+5. the promoted final files, their hashes, audit output and render hashes are written to the current run's receipt.
 
-If any item is absent or fails, continue the current run from the affected stage. Do not emit a final response. The sole exception is an actual system-safety, authorisation or external-state constraint that makes further work impossible; report that precise constraint rather than describing the run as complete.
+Immediately before the final user-facing response, run `scripts/finalize_delivery.py verify` against that receipt. If any item is absent or fails, continue the current run from the affected stage. Do not emit a final response. The sole exception is an actual system-safety, authorisation or external-state constraint that makes further work impossible; report that precise constraint rather than describing the run as complete.
