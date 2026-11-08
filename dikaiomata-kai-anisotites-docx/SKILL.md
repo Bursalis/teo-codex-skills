@@ -16,8 +16,9 @@ This skill requires the sibling folder `rights-and-inequalities-common`. Install
 Before acting, read these instructions in order:
 
 1. [`../rights-and-inequalities-common/core-and-evidence.md`](../rights-and-inequalities-common/core-and-evidence.md) for the project root, authoritative inputs, provenance, evidence boundary, Notion recovery, writing authority and negative-construction gate.
-2. [`references/initial-production.md`](references/initial-production.md) for the research, summary, dossier, pedagogical-design and script requirements.
-3. [`references/docx-quality-gates.md`](references/docx-quality-gates.md) before finalising or delivering any file.
+2. [`references/runtime-activation.md`](references/runtime-activation.md) before every run, including a new-unit run and a targeted revision.
+3. [`references/initial-production.md`](references/initial-production.md) for the research, summary, dossier, pedagogical-design and script requirements.
+4. [`references/docx-quality-gates.md`](references/docx-quality-gates.md) before finalising or delivering any file.
 
 Read `critical-paper-summary` before drafting a selected reading, `teo-writing-academic` before writing or revising prose, and `documents` before authoring or rendering a DOCX. Those skills govern their respective work; this skill supplies the course-specific constraints.
 
@@ -26,6 +27,10 @@ Read `critical-paper-summary` before drafting a selected reading, `teo-writing-a
 - **New unit:** follow every stage in `initial-production.md` in order. Deliver only the two validated DOCX files, then stop for the user's review.
 - **Targeted written revision:** open only the named artifact, the directly relevant bibliography-selected sources, and the applicable parts of the references. Regenerate a downstream written file only when the user explicitly requests it; otherwise state the resulting consistency implication.
 - **Missing source, template, active root or usable Notion access:** use the recovery process in the common reference. Report the precise blocker only after it fails; never substitute a prior deliverable, memory or unapproved source.
+
+## Runtime activation gate
+
+The runtime delivery lock is a prerequisite for every execution, not merely a finalisation step. Before reading sources, creating a run directory, or generating any candidate, complete every check in `references/runtime-activation.md`. The skill must not start production when the Stop hook is absent, untrusted, disabled, unavailable in the current session, or not confirmed by a live canary test. A failed activation check is a deployment blocker: report the exact missing runtime check and do not claim progress, completion or delivery. Once activation is confirmed, initialise the current run lock and keep it active until the verified delivery receipt changes it to `delivery-ready`.
 
 ## Completion boundary
 
