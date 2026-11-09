@@ -35,6 +35,20 @@ def find_lock(cwd: str | None) -> Path | None:
     return None
 
 
+def cwd_belongs_to_run(cwd: str | None, lock: dict[str, Any]) -> bool:
+    """Scope enforcement to the exact Rights run, never to sibling tasks."""
+    run_value = lock.get("run_dir")
+    if not cwd or not isinstance(run_value, str) or not run_value:
+        return False
+    try:
+        current = Path(cwd).resolve()
+        run_dir = Path(run_value).resolve()
+        current.relative_to(run_dir)
+        return True
+    except (OSError, ValueError, RuntimeError):
+        return False
+
+
 def receipt_is_valid(lock: dict[str, Any]) -> tuple[bool, str]:
     if lock.get("skill") != "dikaiomata-kai-anisotites-docx":
         return False, "Το lock δεν ανήκει στο DOCX skill Δικαιώματα και ανισότητες."
@@ -84,6 +98,9 @@ def main() -> int:
         return 0
     try:
         lock = json.loads(lock_path.read_text(encoding="utf-8"))
+        if not cwd_belongs_to_run(event.get("cwd"), lock):
+            emit({})
+            return 0
         valid, reason = receipt_is_valid(lock)
     except (OSError, json.JSONDecodeError, ValueError) as exc:
         valid, reason = False, f"Το runtime lock δεν μπορεί να επαληθευτεί: {exc}"
