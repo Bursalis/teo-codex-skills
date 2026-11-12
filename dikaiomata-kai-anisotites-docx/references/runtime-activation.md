@@ -1,6 +1,6 @@
 # Runtime activation and per-run preflight
 
-This procedure is mandatory before every execution of the DOCX skill. It is separate from the content quality gates. Its purpose is to prove that the runtime can block completion before production begins.
+This procedure is mandatory before every execution of the DOCX or PPTX skill. It is separate from the content quality gates. Its purpose is to prove that the runtime can block completion before production begins.
 
 ## One-time installation and trust
 
@@ -16,12 +16,12 @@ If Settings → Hooks reports `No hooks found`, if the hook is untrusted, or if 
 
 ## Mandatory preflight on every run
 
-At the beginning of every new-unit run and every targeted revision:
+At the beginning of every new-unit run, targeted revision or explicitly authorised PPTX run:
 
 1. Verify that the current session is local Codex, not a cloud-orchestrated environment where plugin hooks are unavailable.
 2. Verify that the trusted/enabled Stop hook is visible in the current session. Do not infer this from the existence of a file on disk.
 3. Verify that the current working root contains the expected `.codex` location for the delivery-lock state.
-4. Only after the three checks pass, create the isolated run directory and execute `finalize_delivery.py init-run --lock-state <working-root>/.codex/rights-and-inequalities-delivery-lock.json`.
+4. Only after the three checks pass, create the isolated run directory and initialise the matching run lock: use `finalize_delivery.py init-run` for DOCX runs and `finalize_pptx_delivery.py init-run` for PPTX runs, always with `--lock-state <working-root>/.codex/rights-and-inequalities-delivery-lock.json`.
 
 The model must treat the live hook listing and canary result as runtime evidence. A static configuration file, a successfully imported Python module, or a manually executed hook script cannot substitute for that evidence.
 
