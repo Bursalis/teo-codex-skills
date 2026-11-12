@@ -2,7 +2,7 @@
 
 The sole active project root for this skill is:
 
-`G:\My Drive\[Lines of work]\Δικαιώματα & ανισότητες`
+`C:\Users\tkary\My Drive (tkaryotis@gmail.com)\[Lines of work]\Δικαιώματα & ανισότητες`
 
 Treat the former Dropbox directory `C:\Users\tkary\Dropbox\[4.Academic]\[Job applications]\[Αίτηση ΕΚΠΑ Αστικός Χώρος]\Δικαιώματα & ανισότητες` as historical and out of scope. It is not a fallback, source location, template location, staging directory or delivery folder.
 
