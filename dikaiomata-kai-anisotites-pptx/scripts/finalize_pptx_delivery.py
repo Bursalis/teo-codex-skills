@@ -71,7 +71,7 @@ def finalise(args: argparse.Namespace) -> int:
     if not candidate.is_file() or run_dir not in candidate.parents:
         raise ValueError("Το PPTX candidate πρέπει να βρίσκεται μέσα στο τρέχον run.")
     audit = json.loads(args.audit.resolve().read_text(encoding="utf-8"))
-    if not isinstance(audit, list) or not audit or not all(item.get("pass") is True for item in audit if isinstance(item, dict)):
+    if not isinstance(audit, list) or not audit or not all(isinstance(item, dict) and item.get("pass") is True for item in audit):
         raise ValueError("Το PPTX audit δεν επιβεβαιώνει ότι όλοι οι έλεγχοι πέρασαν.")
     visual = json.loads(args.visual_review.resolve().read_text(encoding="utf-8"))
     if visual.get("run_id") != run["run_id"] or visual.get("visual_inspection_passed") is not True:
