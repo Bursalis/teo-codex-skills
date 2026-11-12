@@ -2,7 +2,7 @@
 
 Apply these gates before delivery.
 
-0. Complete [`runtime-activation.md`](runtime-activation.md) and obtain live evidence that the trusted Stop hook is loaded before creating the run directory or reading sources.
+0. Complete [`runtime-activation.md`](runtime-activation.md) and initialise the internal run-bound delivery lock before creating candidates or reading sources. No external Stop hook is required.
 1. Run `scripts/quality_gate.py self-test` at the beginning of a new unit run.
 2. Render and inspect the critical-summaries DOCX before creating the argument dossier. Confirm one Heading 3 for each selected individual reading, 270–330 body words per reading, verified APA headings, and passed duplicate-paragraph, duplicate-sentence and sentence-by-sentence source-fidelity audits.
 3. Before finalising the lecture, verify that lecture prose alone is 3,600–4,400 words; every source-dependent claim has a page-verified citation; the bibliography exactly matches the citations; and duplicate-prose and semantic-structure audits pass. Redesign the dossier and draft a new script if its analytical structure or word range fails.
@@ -27,4 +27,4 @@ The command reruns the candidate audit, verifies the visual-review inventory, re
 
 `finalize_delivery.py verify --receipt <run>/delivery-receipt.json --unit <αριθμός> --title <τίτλος>`
 
-Its successful exit is necessary, but not sufficient by itself: the final response must cite the two actual promoted files and state that the final audit and visual inspection passed. With the trusted `rights-delivery-lock` plugin enabled, only a valid receipt whose files still match their hashes changes the active lock to `delivery-ready` and permits Codex to end the turn.
+Its successful exit is necessary, but not sufficient by itself: the final response must cite the two actual promoted files and state that the final audit and visual inspection passed. Only a valid receipt whose files still match their hashes changes the internal lock to `delivery-ready`.

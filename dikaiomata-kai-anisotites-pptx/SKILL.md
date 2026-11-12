@@ -18,7 +18,7 @@ Before acting, read:
 1. [`../rights-and-inequalities-common/core-and-evidence.md`](../rights-and-inequalities-common/core-and-evidence.md) for project-root verification, authoritative inputs, evidence boundaries, provenance and academic-writing rules.
 2. [`references/pptx-production.md`](references/pptx-production.md) for the reviewed-input gate, fresh slide plan, template contracts and construction rules.
 3. [`references/pptx-quality-gates.md`](references/pptx-quality-gates.md) before export or delivery.
-4. [`../dikaiomata-kai-anisotites-docx/references/runtime-activation.md`](../dikaiomata-kai-anisotites-docx/references/runtime-activation.md) before every PPTX run. Apply its runtime activation and scoped delivery-lock rules to this skill as well.
+4. [`../dikaiomata-kai-anisotites-docx/references/runtime-activation.md`](../dikaiomata-kai-anisotites-docx/references/runtime-activation.md) before every PPTX run. Apply its local preflight and scoped delivery-lock rules to this skill as well; external Stop hooks are optional.
 
 Read `teo-writing-academic` before preparing slide text and `presentations` before inspecting or building the deck. The current reviewed final script is the sole source of slide claims and wording; the summaries check analytical fidelity only.
 

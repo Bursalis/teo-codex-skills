@@ -30,7 +30,7 @@ Read `critical-paper-summary` before drafting a selected reading, `teo-writing-a
 
 ## Runtime activation gate
 
-The runtime delivery lock is a prerequisite for every execution, not merely a finalisation step. Before reading sources, creating a run directory, or generating any candidate, complete every check in `references/runtime-activation.md`. The skill must not start production when the Stop hook is absent, untrusted, disabled, unavailable in the current session, or not confirmed by a live canary test. A failed activation check is a deployment blocker: report the exact missing runtime check and do not claim progress, completion or delivery. Once activation is confirmed, initialise the current run lock and keep it active until the verified delivery receipt changes it to `delivery-ready`.
+The internal run-bound delivery lock is a prerequisite for every execution, not merely a finalisation step. Before reading sources, creating a run directory, or generating any candidate, complete the local preflight in `references/runtime-activation.md`. External Stop hooks, plugins and canary tests are optional and are not production prerequisites. A failed internal preflight or run-lock initialisation is a deployment blocker: report the exact missing local requirement and do not claim progress, completion or delivery. Once activation is confirmed, initialise the current run lock and keep it active until the verified delivery receipt changes it to `delivery-ready`.
 
 ## Completion boundary
 
@@ -58,4 +58,4 @@ The run reaches `delivery-ready` only when `scripts/finalize_delivery.py finalis
 
 Immediately before the final user-facing response, run `scripts/finalize_delivery.py verify` against that receipt. If any item is absent or fails, continue the current run from the affected stage. Do not emit a final response. The sole exception is an actual system-safety, authorisation or external-state constraint that makes further work impossible; report that precise constraint rather than describing the run as complete.
 
-When the companion `rights-delivery-lock` plugin is installed and trusted, its Codex `Stop` hook enforces this boundary at runtime: an active or invalid lock blocks the turn and continues the run. Do not delete, move or manually edit the lock-state file. A user who explicitly abandons a run may remove the state file themselves; this skill does not provide an automated bypass.
+The internal receipt and lock scripts enforce this boundary during production and finalisation. An external `rights-delivery-lock` plugin or Stop hook may be used as an additional convenience, but the skill must not depend on it and must remain correct when it is absent or unavailable. Do not delete, move or manually edit the lock-state file. A user who explicitly abandons a run may remove the state file themselves; this skill does not provide an automated bypass.

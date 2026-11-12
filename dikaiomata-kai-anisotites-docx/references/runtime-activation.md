@@ -1,32 +1,21 @@
-# Runtime activation and per-run preflight
+# Local runtime preflight and per-run lock
 
-This procedure is mandatory before every execution of the DOCX or PPTX skill. It is separate from the content quality gates. Its purpose is to prove that the runtime can block completion before production begins.
-
-## One-time installation and trust
-
-The operator must complete these steps after installing or updating the skill, and whenever the Codex application or configuration is reset:
-
-1. Confirm that the `rights-delivery-lock` plugin is installed and enabled from the trusted repository.
-2. Confirm that `C:\Users\tkary\.codex\hooks.json` exists and contains the user-level `Stop` hook, or that an equivalent managed hook is active.
-3. Fully quit and reopen Codex. Opening a new chat without restarting after a hook or plugin change is not sufficient evidence that the runtime loaded the new definition.
-4. In the new local Codex session, open Settings → Hooks or run `/hooks`. Confirm that the Rights delivery-lock `Stop` hook is listed and marked trusted/enabled.
-5. Run a harmless canary with an active lock and no delivery receipt. The session must be blocked from ending and must continue the run. A terminal-only invocation of the Python hook is not enough: the canary must pass through the Codex runtime.
-
-If Settings → Hooks reports `No hooks found`, if the hook is untrusted, or if the canary is not observed, activation has failed. Do not initialise a production run. Do not create candidates or provide a progress-style final response. Resolve the runtime configuration and repeat this procedure.
+This procedure is mandatory before every execution of the DOCX or PPTX skill. It replaces the former external Stop-hook and canary dependency. The internal run-bound lock, candidate audit, finalise step and receipt verification remain mandatory.
 
 ## Mandatory preflight on every run
 
-At the beginning of every new-unit run, targeted revision or explicitly authorised PPTX run:
+Before reading sources or creating any candidate:
 
-1. Verify that the current session is local Codex, not a cloud-orchestrated environment where plugin hooks are unavailable.
-2. Verify that the trusted/enabled Stop hook is visible in the current session. Do not infer this from the existence of a file on disk.
-3. Verify that the current working root contains the expected `.codex` location for the delivery-lock state.
-4. Only after the three checks pass, create the isolated run directory and initialise the matching run lock: use `finalize_delivery.py init-run` for DOCX runs and `finalize_pptx_delivery.py init-run` for PPTX runs, always with `--lock-state <working-root>/.codex/rights-and-inequalities-delivery-lock.json`.
+1. Verify that the active project root exists and contains the required `[Πηγές]`, `[Templates]` and `[Παραδοτέα]` directories.
+2. Verify that the required local skill scripts, templates and references are available from the installed package.
+3. Create a unique isolated run directory outside `[Παραδοτέα]`.
+4. Initialise the matching internal run lock before production: use `finalize_delivery.py init-run` for DOCX runs and `finalize_pptx_delivery.py init-run` for PPTX runs, always with `--lock-state <working-root>/.codex/rights-and-inequalities-delivery-lock.json`.
+5. Keep candidates, renders, audit outputs and visual-review records inside that run directory. Do not place intermediate files in `[Παραδοτέα]`.
 
-The model must treat the live hook listing and canary result as runtime evidence. A static configuration file, a successfully imported Python module, or a manually executed hook script cannot substitute for that evidence.
+An external plugin, Stop hook, trust setting or live canary is optional and must not be treated as a prerequisite or as evidence required to begin production.
 
 ## Failure handling
 
-Activation failure is the only pre-production stop condition in this procedure. It does not authorise a partial production run, a provisional DOCX, or a claim that the skill completed. Once the gate passes, the ordinary repair loop applies: a failed content or visual quality gate requires substantive repair and repetition until every gate passes, followed by `finalise` and `verify`.
+If the active root, required package resource or internal run-lock initialisation fails, do not begin production. Report the precise local blocker and resolve it before creating candidates. Once the internal lock is active, a failed content, audit or visual gate is a repair signal: repair the responsible stage, rerun every affected check, then use `finalise` and `verify` to establish `delivery-ready`.
 
-For a true hard guarantee across sessions and users, an administrator must deploy the hook as a managed hook through the applicable Codex policy/MDM configuration. A user-level hook is enforceable only after it is loaded, trusted and verified by the live canary.
+The internal receipt is the completion boundary. A final response is permitted only after the current run has a valid delivery receipt, all required audit checks pass, all required renders have been inspected and the matching internal lock is `delivery-ready`.
