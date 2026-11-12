@@ -377,6 +377,7 @@ def read_template_layouts(path: Path) -> set[str]:
 def audit_pptx(path: Path, template: Path | None = None,
                expected_total: int | None = None) -> list[dict[str, Any]]:
     errors: list[str] = []
+    speaker_note_errors: list[str] = []
     checks: list[dict[str, Any]] = []
     with zipfile.ZipFile(path) as z:
         broken = z.testzip()
@@ -416,18 +417,24 @@ def audit_pptx(path: Path, template: Path | None = None,
                 if value and tonos_positions(value, all_caps_box=is_all_caps(z, sp, shape, layout)):
                     errors.append(f"Tonos in all-caps-sensitive text: {sp}: {value[:80]}")
             note_path = related(z, sp, "notesSlide")
+            note_paragraphs = 0
             if note_path is not None:
                 notes_root = xml_part(z, note_path)
-                note_parts: list[str] = []
                 if notes_root is not None:
                     for shape in notes_root.findall(".//p:sp", NS):
                         key = placeholder_key(shape)
-                        value = text_of(shape, q("t", A)).strip()
-                        if key and key[0] == "body" and value:
-                            note_parts.append(value)
-                note = " ".join(note_parts).strip()
-                if note:
-                    errors.append(f"Speaker notes contain text: {sp}")
+                        if not key or key[0] != "body":
+                            continue
+                        for paragraph in shape.findall(".//a:p", NS):
+                            if text_of(paragraph, q("t", A)).strip():
+                                note_paragraphs += 1
+            substantive_slide = lname not in {"Title", "Section Header"} and not is_bibliography
+            if substantive_slide and note_paragraphs == 0:
+                speaker_note_errors.append(f"Speaker notes are missing for substantive slide: {sp}")
+            if note_paragraphs > 2:
+                speaker_note_errors.append(
+                    f"Speaker notes exceed two non-empty paragraphs: {sp} ({note_paragraphs})"
+                )
             if lname in PICTURE_LAYOUTS:
                 native_picture_placeholders = [
                     shape for shape in root.findall(".//p:sp", NS)
@@ -447,8 +454,10 @@ def audit_pptx(path: Path, template: Path | None = None,
 
         checks.extend([
             {"check": "pptx_zip_integrity", "value": broken or "ok", "pass": broken is None},
-            {"check": "approved_layouts_and_empty_speaker_notes", "errors": errors,
+            {"check": "approved_layouts_and_speaker_notes", "errors": errors,
              "slides": len(all_slides), "pass": not errors},
+            {"check": "speaker_notes_quality_structure", "errors": speaker_note_errors,
+             "pass": not speaker_note_errors},
             {"check": "exported_total_matches_slide_plan", "value": len(all_slides),
              "expected": expected_total,
              "pass": expected_total is None or len(all_slides) == expected_total},

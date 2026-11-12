@@ -5,7 +5,7 @@ description: Build and validate the final Rights and Inequalities PowerPoint onl
 
 # Δικαιώματα και ανισότητες — PPTX
 
-Use this skill only when the user explicitly asks for the PowerPoint after reviewing the two written deliverables from the current run. It creates only the editable PPTX. It does not recreate, revise or silently replace the summaries or script.
+Use this skill only when the user explicitly asks for the PowerPoint after reviewing the two written deliverables from the current run. It creates only the editable PPTX, including source-grounded speaker notes planned alongside each slide. It does not recreate, revise or silently replace the summaries or script.
 
 ## Package installation
 
@@ -30,4 +30,4 @@ Read `teo-writing-academic` before preparing slide text and `presentations` befo
 
 ## Completion boundary
 
-Before building, initialise a PPTX run-bound lock with `scripts/finalize_pptx_delivery.py init-run --lock-state <working-root>/.codex/rights-and-inequalities-delivery-lock.json`. Write the candidate deck, audit report and visual-review record only inside that run. Export only the validated PPTX to `[Παραδοτέα]` through `finalize_pptx_delivery.py finalise`; then run `verify` against the receipt. Do not provide a final response until the receipt is valid and the lock is `delivery-ready`. Never create notes, search for or add images, alter picture-placeholder geometry, or expose intermediate decks.
+Before building, initialise a PPTX run-bound lock with `scripts/finalize_pptx_delivery.py init-run --lock-state <working-root>/.codex/rights-and-inequalities-delivery-lock.json`. Write the candidate deck, audit report and visual-review record only inside that run. Export only the validated PPTX to `[Παραδοτέα]` through `finalize_pptx_delivery.py finalise`; then run `verify` against the receipt. Do not provide a final response until the receipt is valid and the lock is `delivery-ready`. Speaker notes must be inside the PPTX and follow the source-grounded note plan; never create a separate notes deliverable. Do not search for or add images, alter picture-placeholder geometry, or expose intermediate decks.
