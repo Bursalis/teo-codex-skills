@@ -18,6 +18,7 @@ Before acting, read:
 1. [`../rights-and-inequalities-common/core-and-evidence.md`](../rights-and-inequalities-common/core-and-evidence.md) for project-root verification, authoritative inputs, evidence boundaries, provenance and academic-writing rules.
 2. [`references/pptx-production.md`](references/pptx-production.md) for the reviewed-input gate, fresh slide plan, template contracts and construction rules.
 3. [`references/pptx-quality-gates.md`](references/pptx-quality-gates.md) before export or delivery.
+4. [`../dikaiomata-kai-anisotites-docx/references/runtime-activation.md`](../dikaiomata-kai-anisotites-docx/references/runtime-activation.md) before every PPTX run. Apply its runtime activation and scoped delivery-lock rules to this skill as well.
 
 Read `teo-writing-academic` before preparing slide text and `presentations` before inspecting or building the deck. The current reviewed final script is the sole source of slide claims and wording; the summaries check analytical fidelity only.
 
@@ -29,4 +30,4 @@ Read `teo-writing-academic` before preparing slide text and `presentations` befo
 
 ## Completion boundary
 
-Export only the validated PPTX to `[Παραδοτέα]`, then stop. Never create notes, search for or add images, alter picture-placeholder geometry, or expose intermediate decks.
+Before building, initialise a PPTX run-bound lock with `scripts/finalize_pptx_delivery.py init-run --lock-state <working-root>/.codex/rights-and-inequalities-delivery-lock.json`. Write the candidate deck, audit report and visual-review record only inside that run. Export only the validated PPTX to `[Παραδοτέα]` through `finalize_pptx_delivery.py finalise`; then run `verify` against the receipt. Do not provide a final response until the receipt is valid and the lock is `delivery-ready`. Never create notes, search for or add images, alter picture-placeholder geometry, or expose intermediate decks.

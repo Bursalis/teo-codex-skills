@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fail closed on Stop while an active Rights DOCX production run lacks proof."""
+"""Fail closed on Stop while an active Rights DOCX/PPTX run lacks proof."""
 from __future__ import annotations
 
 import hashlib
@@ -50,10 +50,11 @@ def cwd_belongs_to_run(cwd: str | None, lock: dict[str, Any]) -> bool:
 
 
 def receipt_is_valid(lock: dict[str, Any]) -> tuple[bool, str]:
-    if lock.get("skill") != "dikaiomata-kai-anisotites-docx":
-        return False, "Το lock δεν ανήκει στο DOCX skill Δικαιώματα και ανισότητες."
+    skill = lock.get("skill")
+    if skill not in {"dikaiomata-kai-anisotites-docx", "dikaiomata-kai-anisotites-pptx"}:
+        return False, "Το lock δεν ανήκει σε έγκυρο skill Δικαιωμάτων και ανισοτήτων."
     if lock.get("state") != "delivery-ready":
-        return False, "Ο ενεργός DOCX run δεν έχει φτάσει σε κατάσταση delivery-ready."
+        return False, "Ο ενεργός Rights run δεν έχει φτάσει σε κατάσταση delivery-ready."
     receipt_value = lock.get("receipt")
     if not isinstance(receipt_value, str):
         return False, "Δεν υπάρχει διαδρομή delivery receipt στο runtime lock."
@@ -69,8 +70,9 @@ def receipt_is_valid(lock: dict[str, Any]) -> tuple[bool, str]:
     if receipt.get("unit") != lock.get("unit") or receipt.get("title") != lock.get("title"):
         return False, "Το receipt δεν αντιστοιχεί στον κλειδωμένο run."
     deliverables = receipt.get("deliverables")
-    if not isinstance(deliverables, dict) or set(deliverables) != {"summaries", "lecture"}:
-        return False, "Το receipt δεν περιέχει ακριβώς τα δύο απαιτούμενα DOCX."
+    expected = {"summaries", "lecture"} if skill.endswith("-docx") else {"pptx"}
+    if not isinstance(deliverables, dict) or set(deliverables) != expected:
+        return False, "Το receipt δεν περιέχει τα απαιτούμενα παραδοτέα του τρέχοντος skill."
     for item in deliverables.values():
         if not isinstance(item, dict) or not isinstance(item.get("path"), str):
             return False, "Το receipt περιέχει μη έγκυρη εγγραφή παραδοτέου."
