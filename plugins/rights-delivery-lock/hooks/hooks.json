@@ -1,5 +1,5 @@
 {
-  "description": "Fail-closed completion guard for active Rights and Inequalities DOCX runs.",
+  "description": "Fail-closed completion guard for active Rights and Inequalities DOCX or PPTX runs.",
   "hooks": {
     "Stop": [
       {
@@ -7,7 +7,7 @@
           {
             "type": "command",
             "command": "python3 \"${PLUGIN_ROOT}/hooks/stop_delivery_lock.py\"",
-            "commandWindows": "py -3 \"${PLUGIN_ROOT}\\hooks\\stop_delivery_lock.py\"",
+            "commandWindows": "python \"${PLUGIN_ROOT}\\hooks\\stop_delivery_lock.py\"",
             "timeout": 3,
             "statusMessage": "Verifying Rights delivery lock"
           }
